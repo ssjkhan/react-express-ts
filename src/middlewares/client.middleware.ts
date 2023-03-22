@@ -1,23 +1,30 @@
-import express, { NextFunction, Request, Response, Router } from "express";
+import express from "express";
+import { GetApplicationMode } from "@utils/mode.util";
 import path from "path";
 
-const router: Router = Router();
+// serve static assets
+export function ClientStaticAssets() {
+  const mode = GetApplicationMode();
+  let staticPaths: string[] = [];
 
-router.use("/", (req: Request, res: Response, next: NextFunction) => {
-  console.log(
-    `This is from client middleware \t${req.originalUrl}`,
-  );
-  next();
-});
+  if (mode === "production") {
+    staticPaths.push(path.resolve(__dirname, "..", "client", "dist"));
+  } else {
+    staticPaths.push(path.resolve(__dirname, "..", "client", "public"));
+    staticPaths.push(path.resolve(__dirname, "..", "client"));
+  }
 
-// function router(req: Request, res: Response, next: NextFunction): void {
-//   console.log("THis is from client middleware");
-//   next();
-// }
-router.get("/*", (_: Request, res: Response) => {
-  res.sendFile(
-    path.resolve(__dirname, "..", "client", "index.html"),
-  );
-});
+  return staticPaths.map((path) => express.static(path));
+}
 
-export default router;
+// serve client
+export function ServeClient() {
+  const mode = GetApplicationMode();
+  let clientPath: string = "";
+
+  if (mode === "production") {
+    clientPath = path.resolve(__dirname, "..", "client", "dist", "index.html");
+  }
+}
+
+export default {};

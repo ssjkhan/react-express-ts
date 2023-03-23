@@ -1,7 +1,10 @@
 import express, { Express, NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import path from "path";
-import { ClientStaticAssets } from "@middleware/client.middleware";
+import {
+  ServeClient,
+  ServeClientStaticAssets,
+} from "@middleware/client.middleware";
 
 const mode = process.env.NODE_ENV === "production"
   ? "production"
@@ -14,7 +17,7 @@ dotenv.config({
 const server: Express = express();
 
 // serve static assets for client
-server.use(ClientStaticAssets());
+server.use(ServeClientStaticAssets());
 
 const port = process.env.PORT || 3000;
 
@@ -24,6 +27,8 @@ server.get("/api/v1", (req: Request, res: Response) => {
     from: "ssjkhan",
   });
 });
+
+server.use(ServeClient);
 
 server.get("/*", (_: Request, res: Response) => {
   res.send("Express + TypeScript 404");

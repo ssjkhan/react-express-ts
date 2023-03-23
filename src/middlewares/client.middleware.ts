@@ -1,30 +1,36 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { GetApplicationMode } from "@utils/mode.util";
+import { GetBuildClientDir } from "@utils/filedir.util";
 import path from "path";
 
 // serve static assets
-export function ClientStaticAssets() {
+export function ServeClientStaticAssets() {
   const mode = GetApplicationMode();
   let staticPaths: string[] = [];
 
   if (mode === "production") {
-    staticPaths.push(path.resolve(__dirname, "..", "client", "dist"));
+    staticPaths.push(GetBuildClientDir());
   } else {
     staticPaths.push(path.resolve(__dirname, "..", "client", "public"));
     staticPaths.push(path.resolve(__dirname, "..", "client"));
   }
 
+  console.log(staticPaths);
+
   return staticPaths.map((path) => express.static(path));
 }
 
 // serve client
-export function ServeClient() {
+export function ServeClient(req: Request, res: Response) {
   const mode = GetApplicationMode();
   let clientPath: string = "";
 
   if (mode === "production") {
-    clientPath = path.resolve(__dirname, "..", "client", "dist", "index.html");
+    clientPath = path.resolve(GetBuildClientDir(), "index.dist.html");
   }
+
+  console.log(`Build client path:\t ${clientPath}`);
+  res.sendFile(clientPath);
 }
 
 export default {};

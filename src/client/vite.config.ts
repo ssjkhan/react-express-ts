@@ -11,32 +11,37 @@ console.log(process.env.NODE_ENV);
 // https://vitejs.dev/config/
 
 // dev config
-// export default defineConfig({
-//   plugins: [react()],
-//   build: {
-//     outDir: "./dist",
-//     manifest: true,
-//     rollupOptions: {
-//       input: "./src/main.tsx",
-//     },
-//   },
-//   server: {
-//     port: 5000,
-//     origin: "http://127.0.0.1:3000",
-//   },
-// });
-
-// prod config
-export default defineConfig({
-  plugins: [react()],
-  build: {
-    outDir: "../../build/client/dist",
-    manifest: true,
-    rollupOptions: {
-      input: "index.dist.html",
+let viteConfig = {};
+if (process.env.NODE_ENV === "production ") {
+  // prod config
+  viteConfig = {
+    plugins: [react()],
+    build: {
+      outDir: "../../build/client/dist",
+      manifest: true,
+      rollupOptions: {
+        input: "index.dist.html",
+      },
     },
-  },
-  server: {
-    origin: "http://127.0.0.1:3000",
-  },
-});
+    server: {
+      origin: "http://127.0.0.1:3000",
+    },
+  };
+} else {
+  viteConfig = {
+    plugins: [react()],
+    build: {
+      outDir: "./dist",
+      manifest: true,
+      rollupOptions: {
+        input: "./src/main.tsx",
+      },
+    },
+    server: {
+      port: 5000,
+      origin: "http://127.0.0.1:3000",
+    },
+  };
+}
+
+export default defineConfig(viteConfig);

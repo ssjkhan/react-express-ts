@@ -1,20 +1,17 @@
 import express, { Express, NextFunction, Request, Response } from "express";
-import dotenv from "dotenv";
 import GeneralMiddleware from "@middleware/general.middleware";
 import { GetApplicationMode } from "@utils/mode.util";
 import {
   ServeClient,
   ServeClientStaticAssets,
 } from "@middleware/client.middleware";
+import EnvInit from "@middleware/env.middleware";
 
+// initialize server variables
+EnvInit();
 const port = process.env.PORT || 3000;
 const mode = GetApplicationMode();
-
-const envPath = mode === "development" ? "./.env.local" : "./.env";
-dotenv.config({
-  path: envPath,
-});
-
+console.log(process.env);
 //intialize server
 const server: Express = express();
 

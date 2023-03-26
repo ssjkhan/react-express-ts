@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
 import { GetApplicationMode } from "@utils/mode.util";
 
 const mode = GetApplicationMode();
@@ -13,4 +14,4 @@ function logger() {
   return morgan("dev");
 }
 
-export default [cookieParser(), logger()];
+export default [helmet(), cookieParser(), logger()];

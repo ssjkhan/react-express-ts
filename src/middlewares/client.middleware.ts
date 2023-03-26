@@ -15,8 +15,6 @@ export function ServeClientStaticAssets() {
     staticPaths.push(path.resolve(__dirname, "..", "client"));
   }
 
-  console.log(staticPaths);
-
   return staticPaths.map((path) => express.static(path));
 }
 
@@ -31,7 +29,6 @@ export function ServeClient(req: Request, res: Response) {
     clientPath = path.resolve(GetClientRootDir(), "index.html");
   }
 
-  console.log(`Client path:\t ${clientPath}`);
   res.sendFile(clientPath);
 }
 

@@ -1,25 +1,28 @@
 import express, { Express, NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
-import path from "path";
+import GeneralMiddleware from "@middleware/general.middleware";
+import { GetApplicationMode } from "@utils/mode.util";
 import {
   ServeClient,
   ServeClientStaticAssets,
 } from "@middleware/client.middleware";
 
-const mode = process.env.NODE_ENV === "production"
-  ? "production"
-  : "development";
+const port = process.env.PORT || 3000;
+const mode = GetApplicationMode();
+
 const envPath = mode === "development" ? "./.env.local" : "./.env";
 dotenv.config({
   path: envPath,
 });
 
+//intialize server
 const server: Express = express();
 
 // serve static assets for client
 server.use(ServeClientStaticAssets());
 
-const port = process.env.PORT || 3000;
+// logging middleware
+server.use(GeneralMiddleware);
 
 server.get("/api/v1", (req: Request, res: Response) => {
   res.json({
@@ -37,6 +40,8 @@ server.get("/*", (_: Request, res: Response) => {
 server.listen(
   port,
   () => {
-    console.log(`[server]: Server is running at http://localhost:${port}`);
+    console.log(
+      `[server]: Server is running at http://localhost:${port} in ${mode} mode`,
+    );
   },
 );

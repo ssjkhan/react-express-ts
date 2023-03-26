@@ -17,7 +17,7 @@ function logger() {
 export default [
   helmet(),
   express.json(),
-  express.urlencoded(),
+  express.urlencoded({ extended: true }),
   cookieParser(),
   logger(),
 ];

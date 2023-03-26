@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { GetApplicationMode } from "@utils/mode.util";
-import { GetBuildClientDir } from "@utils/filedir.util";
+import { GetBuildClientDir, GetClientRootDir } from "@utils/filedir.util";
 import path from "path";
 
 // serve static assets
@@ -27,9 +27,11 @@ export function ServeClient(req: Request, res: Response) {
 
   if (mode === "production") {
     clientPath = path.resolve(GetBuildClientDir(), "index.dist.html");
+  } else {
+    clientPath = path.resolve(GetClientRootDir(), "index.html");
   }
 
-  console.log(`Build client path:\t ${clientPath}`);
+  console.log(`Client path:\t ${clientPath}`);
   res.sendFile(clientPath);
 }
 

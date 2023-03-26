@@ -11,13 +11,13 @@ import EnvInit from "@middleware/env.middleware";
 EnvInit();
 const port = process.env.PORT || 3000;
 const mode = GetApplicationMode();
+const server: Express = express();
 
 //intialize server
-const server: Express = express();
 server.use(ServeClientStaticAssets());
 server.use(GeneralMiddleware);
 
-// testing route
+// sample api route
 server.get("/api/v1", (_: Request, res: Response) => {
   res.json({
     project: "Typescript, React and Express Boilerplate",
@@ -25,7 +25,7 @@ server.get("/api/v1", (_: Request, res: Response) => {
   });
 });
 
-// serving client and initializing server
+// serving client and listening on port @PORT
 server.use("/", ServeClient);
 server.listen(
   port,

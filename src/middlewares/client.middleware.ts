@@ -19,7 +19,7 @@ export function ServeClientStaticAssets() {
 }
 
 // serve client
-export function ServeClient(req: Request, res: Response) {
+export function ServeClient(_: Request, res: Response) {
   const mode = GetApplicationMode();
   let clientPath: string = "";
 

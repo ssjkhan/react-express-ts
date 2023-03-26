@@ -25,7 +25,7 @@ server.get("/api/v1", (_: Request, res: Response) => {
   });
 });
 
-// serving client and listening on port @PORT
+// serving client and listening on port
 server.use("/", ServeClient);
 server.listen(
   port,
